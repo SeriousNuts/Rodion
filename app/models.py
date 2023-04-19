@@ -22,11 +22,11 @@ class ModelTreat:
 
     def consruct_from_dir(self, value):
 
-        self.alfa = float(value['alfa'])/time_values[value['alfa_time']]
-        self.beta = float(value['beta'])/time_values[value['beta_time']]
-        self.t_between = float(value['t_between'])/time_values[value['t_between_time']]
-        self.t_diag = float(value['t_diag'])/time_values[value['t_diag_time']]
-        self.t_const = float(value['t_const'])/time_values[value['t_const_time']]
+        self.alfa = float(value['alfa']) / time_values[value['alfa_time']]
+        self.beta = float(value['beta']) / time_values[value['beta_time']]
+        self.t_between = float(value['t_between']) / time_values[value['t_between_time']]
+        self.t_diag = float(value['t_diag']) / time_values[value['t_diag_time']]
+        self.t_const = float(value['t_const']) / time_values[value['t_const_time']]
         if value['ib_checked'] == 1:
             self.number_IB = True
 
@@ -68,3 +68,10 @@ class ModelTreat:
 
     def r_nadezh(self):
         return 1 - self.p_impact2()
+
+    def t_diag_iter(self):  # формула для более точного t_diag
+        t_diag_iter = self.t_diag
+        r_nad = self.r_nadezh()
+        for i in range(4):
+            t_diag_iter = t_diag_iter ** i * (1 - r_nad ** i) + r_nad ** i * self.t_recharge
+        return t_diag_iter
