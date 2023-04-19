@@ -1,0 +1,12 @@
+.values_panel {
+    position: fixed; /* Фиксированное положение */
+    top: 10%; /* Расстояние сверху */
+    padding: 10px; /* Поля вокруг текста */
+    background: #D3D3D3						; /* Цвет фона */
+    border: 1px solid #333; /* Параметры рамки */
+  	border-radius: 25px;
+  	box-shadow: 1px 1px 2px black;
+
+   }
+
+

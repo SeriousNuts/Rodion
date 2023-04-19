@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Modelst</title>
+    {% extends "base.html" %}
+    {% block content %}
+    <style>
+        .values_panel
+        {
+    display: inline-block;
+    padding: 10px; /* Поля вокруг текста */
+    background: #D3D3D3						; /* Цвет фона */
+    border: 1px solid #333; /* Параметры рамки */
+  	border-radius: 25px;
+  	box-shadow: 1px 1px 2px black;
+    margin: 10px;
+    vertical-align: middle;
+   }
+        #delete_button {
+            position: relative;
+            left: 230px;
+        }
+    </style>
+</head>
+<body>
+<h1>Выберите модель</h1>
+  <div id="values_page" class="values_page">
+        <div class="values_panel" id="1">
+
+                <div class="value">
+        <h3>alfa
+            <input class="field" type="number" name="alfa" />
+            <select id="alfa_time">
+                    <option>секунда</option>
+                    <option>минута</option>
+                    <option>час</option>
+                    <option>день</option>
+                    <option>неделя</option>
+                    <option>месяц</option>
+                    <option>год</option>
+                </select></h3></h3>
+                </div>
+        <div class="value">
+        <h3>beta
+        <input class="field" type="number" name="beta" />
+            <select id="beta_time">
+                    <option>секунда</option>
+                    <option>минута</option>
+                    <option>час</option>
+                    <option>день</option>
+                    <option>неделя</option>
+                    <option>месяц</option>
+                    <option>год</option>
+                </select></h3></h3>
+            </div>
+                <div class="value">
+        <h3>t_between
+        <input class="field" type="number" name="t_between" />
+             <select id="t_between_time">
+                    <option>секунда</option>
+                    <option>минута</option>
+                    <option>час</option>
+                    <option>день</option>
+                    <option>неделя</option>
+                    <option>месяц</option>
+                    <option>год</option>
+                </select></h3></h3>
+                </div>
+                <div class="value">
+        <h3>t_diag
+        <input class="field" type="number" name="t_diag" />
+            <select id="t_diag_time">
+                    <option>секунда</option>
+                    <option>минута</option>
+                    <option>час</option>
+                    <option>день</option>
+                    <option>неделя</option>
+                    <option>месяц</option>
+                    <option>год</option>
+                </select></h3></h3>
+            </div>
+            <div class="value">
+        <h3>t_recharge
+        <input class="field" type="number" name="t_recharge"/>
+            <select id="t_recharge_time">
+                    <option>секунда</option>
+                    <option>минута</option>
+                    <option>час</option>
+                    <option>день</option>
+                    <option>неделя</option>
+                    <option>месяц</option>
+                    <option>год</option>
+                </select></h3></h3>
+            </div>
+            <div class="value">
+        <h3>t_const
+        <input class="field" type="number" name="t_const" />
+        <select id="t_const_time">
+                    <option>секунда</option>
+                    <option>минута</option>
+                    <option>час</option>
+                    <option>день</option>
+                    <option>неделя</option>
+                    <option>месяц</option>
+                    <option>год</option>
+                </select></h3>
+
+            </div>
+        <input class="number_IB" name="number_IB" type="checkbox" ><label>Без учёта требований 	ИБ</label>
+                      <select>
+                    <option>И</option>
+                    <option>ИЛИ</option>
+                </select>
+
+        <input type="button" id="new_value" value="добавить модель" onclick="create()">
+        </div>
+          </div>
+    <input type="submit" value="Расчитать параметры" onclick="sendjson()" />
+
+<script>
+    function create()//создаём дополнительные панели по кнопке
+    {
+        const divElementPanelPage = document.createElement("div");
+        divElementPanelPage.className = 'values_panel'
+        const variables = ['alfa', 'beta', 't_between', 't_diag', 't_recharge', 't_const'];
+        const times = ['секунда','минута','час','день','неделя','месяц','год']
+        const numb_values_panel = document.getElementById("values_page").lastElementChild.id //добавляем id для панелей
+        // чтобы было легче их сохранять
+        divElementPanelPage.id = String(Number(numb_values_panel) + 1);
+        const delete_button = document.createElement("button");
+            delete_button.id = 'delete_button'
+            delete_button.class = 'delete_button'
+            delete_button.innerHTML = 'X'
+            delete_button.value = divElementPanelPage.id
+            delete_button.setAttribute('onClick', 'deletePanel(value)')
+        divElementPanelPage.appendChild(delete_button)
+        for (let v = 0; v < variables.length; v++)//добавляем поля для ввода
+        {
+            const divElementValuePanel = document.createElement('div')
+                divElementValuePanel.className = 'value'
+            const head_h3 = document.createElement("h3");
+            const input = document.createElement("input");
+                head_h3.innerHTML = variables[v];
+                input.name = variables[v];
+                input.class = 'inputs';
+                input.type = 'number'
+            const time_select = document.createElement("select")
+            for (let t = 0; t < times.length; t++)//добавляем выбор времени
+            {
+                const time_option = document.createElement("option")
+                time_option.innerHTML = times[t]
+                time_select.appendChild(time_option)
+            }
+            head_h3.appendChild(input);
+            head_h3.appendChild(time_select)
+            divElementValuePanel.appendChild(head_h3);
+            divElementPanelPage.appendChild(divElementValuePanel)
+        }
+            const option = document.createElement("select");
+            const select_beta_and = document.createElement("option");
+                select_beta_and.innerHTML = "И";
+            option.appendChild(select_beta_and)
+            const select_beta_or = document.createElement("option");
+                select_beta_or.innerHTML = "ИЛИ";
+            option.appendChild(select_beta_or);
+           divElementPanelPage.appendChild(option)
+        const number_ib = document.createElement('input');
+            number_ib.name = 'number_IB';
+            number_ib.class = 'number_IB';
+            number_ib.type = 'checkbox';
+        const number_ib_label = document.createElement('label');
+            number_ib_label.innerHTML = 'Без учёта требований ИБ';
+
+        divElementPanelPage.appendChild(number_ib);
+        divElementPanelPage.appendChild(number_ib_label);
+        document.getElementById('values_page').appendChild(divElementPanelPage)
+    }
+    function saveToJSON()//читаем данные панелей и формируем json
+    {
+        var dict_panels = [];
+        var panels_from_html = document.getElementsByClassName("values_panel")
+        for  (let i = 0; i <= panels_from_html.length; i++)
+            {
+                try {
+                    //первое число i это панель
+
+                    const alfa = panels_from_html.item(i).children.item(0).children.item(0).children.item(0).value;
+                    const alfa_time = panels_from_html.item(i).children.item(0).children.item(0).children.item(1).value;
+                    const beta = panels_from_html.item(i).children.item(1).children.item(0).children.item(0).value;
+                    const beta_time = panels_from_html.item(i).children.item(1).children.item(0).children.item(1).value;
+                    const t_between = panels_from_html.item(i).children.item(2).children.item(0).children.item(0).value;
+                    const t_between_time = panels_from_html.item(i).children.item(2).children.item(0).children.item(1).value;
+                    const t_diag = panels_from_html.item(i).children.item(3).children.item(0).children.item(0).value;
+                    const t_diag_time = panels_from_html.item(i).children.item(3).children.item(0).children.item(1).value;
+                    const t_recharge = panels_from_html.item(i).children.item(4).children.item(0).children.item(0).value;
+                    const t_recharge_time = panels_from_html.item(i).children.item(4).children.item(0).children.item(1).value;
+                    const t_const = panels_from_html.item(i).children.item(5).children.item(0).children.item(0).value;
+                    const t_const_time = panels_from_html.item(i).children.item(5).children.item(0).children.item(1).value;
+
+                    const ib_number = panels_from_html.item(i).children.namedItem("number_IB").checked;
+
+                    const json = {
+                        "alfa": alfa,
+                        "alfa_time": alfa_time,
+                        "beta": beta,
+                        "beta_time": beta_time,
+                        "t_between": t_between,
+                        "t_between_time": t_between_time,
+                        "t_diag": t_diag,
+                        "t_diag_time": t_diag_time,
+                        "t_recharge": t_recharge,
+                        "t_recharge_time": t_recharge_time,
+                        "t_const": t_const,
+                        "t_const_time": t_const_time,
+                        "ib_checked": ib_number
+                    }
+                    dict_panels.push(json);
+                }
+                catch (e) {
+                    console.log(e);
+                }
+            }
+        return JSON.stringify(dict_panels);
+        }
+
+    function sendjson()//отправка json во flask
+    {
+        data = saveToJSON()
+        const httpRequest = new XMLHttpRequest();
+
+      if (!httpRequest) {
+      alert('Giving up :( Cannot create an XMLHTTP instance');
+      return false;
+    }
+    httpRequest.open('POST', 'report');
+    httpRequest.send(data);
+    window.location.replace('report')
+    }
+    function deletePanel(value){
+        panel = document.getElementById(value)
+        try{
+            panel.remove()
+        }
+        catch (e) {
+           console.log(e)
+        }
+    }
+</script>
+{% endblock %}
+</body>
+</html>
