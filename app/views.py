@@ -7,7 +7,7 @@ from flask_login import login_required, LoginManager, login_user, current_user, 
 from app import app, db_models, db, login_manager
 from .db_models import User, set_password, Report
 from .models import ModelTreat
-from app import makefile
+from app import report_maker
 from app.forms.LoginForm import LoginForm, RegistrationForm
 
 
