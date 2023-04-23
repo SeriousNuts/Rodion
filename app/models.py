@@ -75,3 +75,6 @@ class ModelTreat:
         for i in range(4):
             t_diag_iter = t_diag_iter ** i * (1 - r_nad ** i) + r_nad ** i * self.t_recharge
         return t_diag_iter
+
+    def r_iinteg(self):  # формула для R интегральное
+        return 1 - (1 - self.r_nadezh()) * (1 - self.r_nadezh())
