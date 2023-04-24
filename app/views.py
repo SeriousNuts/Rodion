@@ -30,9 +30,9 @@ def report():
     print('view report : ', req_params)
     if req_params is not None:
         # try:
-        handled_values = makefile.handle_values(req_params)
-        filename = makefile.excelmaker(handled_values)
-        makefile.savereport(filename)
+        handled_values = report_maker.handle_values(req_params)
+        filename = report_maker.excelmaker(handled_values)
+        report_maker.savereport(filename)
         # except Exception as e:
         # print('def report')
         # print(e)
@@ -53,7 +53,7 @@ def download(filename):
     file = Report.query.filter(
         Report.name == filename
     ).first()
-    download_string = makefile.readreport(file.file, file.name)
+    download_string = report_maker.readreport(file.file, file.name)
     return send_from_directory(download_string, file.name)
 
 
