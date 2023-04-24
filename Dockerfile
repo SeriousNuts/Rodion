@@ -1,15 +1,19 @@
-FROM python:alpine
+FROM python:3.10.9
+
+
+SHELL ["powershell.exe"]
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+RUN C:\Python\python.exe -m pip install --upgrade pip
 
 WORKDIR /rodion_app
 
 COPY . /rodion_app
 
-ENTRYPOINT ["powershell"]
-
-RUN pip3 install --upgrade pip
-
-RUN pip3 install -r requirements.txt
+RUN pip install -r requirements.txt
 
 EXPOSE 5000
+
 
 CMD ["python3", "run.py"]
