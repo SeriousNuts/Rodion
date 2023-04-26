@@ -13,7 +13,7 @@ from app.models import ModelTreat
 import string
 
 #   каталог для загружаемых файлов
-folder_name_in = os.getcwd() + '\\app\\filtestorage\\'
+folder_name_in = os.getcwd() + '\\app\\filestorage\\'
 #   каталог для скачиваемых файлов
 folder_name_out = os.getcwd() + '\\app\\filestorageOUT\\'
 
@@ -36,10 +36,13 @@ def excelmaker(handled_values):
     wb = Workbook()
     ws = wb.active
     #   добавляем записи в таблицу excel
-    for v in handled_values:
-        somelist = [v, v.value()]
+    somelist = []
+    for dict_values in handled_values:
+        for value in dict_values:
+            somelist.append(value)
+            somelist.append(dict_values[value])
+        #somelist = [v, handled_values[v]]
         ws.append(somelist)
-    print('работает')
     #   инициализиуем график
     chart = BarChart()
     #   Инициализируем оси графика
@@ -58,7 +61,7 @@ def excelmaker(handled_values):
     report_name = ''.join(random.choices(string.ascii_lowercase, k=8)) + '_report.xlsx'
     # сохраняем отчёт в память
     wb.save(folder_name_in + report_name)
-
+    print(folder_name_in + report_name, '  : is saved')
     return report_name
 
 
