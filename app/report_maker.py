@@ -45,8 +45,8 @@ def excelmaker(handled_values):
     #   инициализиуем график
     chart = BarChart()
     #   Инициализируем оси графика
-    chart.y_axis.title = 'model'
-    chart.x_axis.title = 'Index'
+    chart.y_axis.title = 'R_nadezhnoe'
+    chart.x_axis.title = 'model'
     # сообщаем графику на основе каких значений строиться
     exc_value = Reference(worksheet=ws, min_row=1, max_row=6, min_col=1, max_col=2)
     #   добавляем график в excel
