@@ -8,14 +8,14 @@ from app import models, db_models, db
 import calendar
 import time
 from datetime import datetime
-
+from pathlib import Path
 from app.models import ModelTreat
 import string
 
 #   каталог для загружаемых файлов
-folder_name_in = os.getcwd() + '\\app\\filestorage\\'
+folder_name_in = Path(Path.cwd(), 'app', 'filestorage')
 #   каталог для скачиваемых файлов
-folder_name_out = os.getcwd() + '\\app\\filestorageOUT\\'
+folder_name_out = Path(Path.cwd(), 'app', 'filestorageOUT')
 
 
 def handle_values(values):
@@ -32,7 +32,6 @@ def handle_values(values):
 
 
 def excelmaker(handled_values):
-
     wb = Workbook()
     ws = wb.active
     #   добавляем записи в таблицу excel
@@ -41,7 +40,7 @@ def excelmaker(handled_values):
         for value in dict_values:
             somelist.append(value)
             somelist.append(dict_values[value])
-        #somelist = [v, handled_values[v]]
+        # somelist = [v, handled_values[v]]
         ws.append(somelist)
     #   инициализиуем график
     chart = BarChart()
