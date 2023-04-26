@@ -13,9 +13,9 @@ from app.models import ModelTreat
 import string
 
 #   каталог для загружаемых файлов
-folder_name_in = 'filtestorage/'
+folder_name_in = os.getcwd() + '\\app\\filtestorage\\'
 #   каталог для скачиваемых файлов
-folder_name_out = 'filestorageOUT/'
+folder_name_out = os.getcwd() + '\\app\\filestorageOUT\\'
 
 
 def handle_values(values):
@@ -55,7 +55,7 @@ def excelmaker(handled_values):
     #   добавляем график в лист excel
     ws.add_chart(chart, 'A10')
     #   генерируем уникальное имя файла
-    report_name = ''.join(random.choices(string.ascii_lowercase, k=28)) + '_report.xlsx'
+    report_name = ''.join(random.choices(string.ascii_lowercase, k=8)) + '_report.xlsx'
     # сохраняем отчёт в память
     wb.save(folder_name_in + report_name)
 

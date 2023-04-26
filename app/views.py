@@ -29,13 +29,13 @@ def report():
     req_params = request.get_json('report', silent=True)  # принимаем результаты в формате json
     print('view report : ', req_params)
     if req_params is not None:
-        # try:
-        handled_values = report_maker.handle_values(req_params)
-        filename = report_maker.excelmaker(handled_values)
-        report_maker.savereport(filename)
-        # except Exception as e:
-        # print('def report')
-        # print(e)
+        try:
+            handled_values = report_maker.handle_values(req_params)
+            filename = report_maker.excelmaker(handled_values)
+            report_maker.savereport(filename)
+        except Exception as e:
+            print('def report')
+            print(e)
     return render_template('report.html',
                            model=model_treat)
 
