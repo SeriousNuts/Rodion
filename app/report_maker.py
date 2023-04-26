@@ -59,15 +59,15 @@ def excelmaker(handled_values):
     #   генерируем уникальное имя файла
     report_name = ''.join(random.choices(string.ascii_lowercase, k=8)) + '_report.xlsx'
     # сохраняем отчёт в память
-    wb.save(folder_name_in + report_name)
-    print(folder_name_in + report_name, '  : is saved')
+    wb.save(str(Path(folder_name_in, report_name)))
+    print(str(folder_name_in) + report_name, '  : is saved')
     return report_name
 
 
 #   сохраняем отчёт в БД
 def savereport(filename):
     timestamp = calendar.timegm(time.gmtime())
-    with open(folder_name_in + filename, 'rb') as file:
+    with open(str(Path(folder_name_in, filename)), 'rb') as file:
         # записываем в формат blob
         blob_file = file.read()
     try:
@@ -85,10 +85,10 @@ def savereport(filename):
         db.session.rollback()
     finally:
         db.session.close()
-        os.remove(folder_name_in + filename)
+        os.remove(str(Path(folder_name_in, filename)))
 
 
 def readreport(data, filename):
-    with open(folder_name_out + filename, 'wb') as file:
+    with open(str(Path(folder_name_out, filename)), 'wb') as file:
         file.write(data)
     return folder_name_out
