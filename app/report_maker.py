@@ -13,9 +13,9 @@ from app.models import ModelTreat
 import string
 
 #   каталог для загружаемых файлов
-folder_name_in = Path(Path.cwd(), 'app', 'filestorage')
+folder_name_in = str(Path(Path.cwd(), 'app', 'filestorage'))
 #   каталог для скачиваемых файлов
-folder_name_out = Path(Path.cwd(), 'app', 'filestorageOUT')
+folder_name_out = str(Path(Path.cwd(), 'app', 'filestorageOUT'))
 
 
 def handle_values(values):
