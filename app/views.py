@@ -30,7 +30,7 @@ def report():
     print('view report : ', req_params)
     if req_params is not None:
         try:
-            handled_values = report_maker.handle_values(req_params)
+            handled_values = report_maker.handle_values_R_nadezh(req_params)
             filename = report_maker.excelmaker(handled_values)
             report_maker.savereport(filename)
         except Exception as e:

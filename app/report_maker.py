@@ -18,16 +18,29 @@ folder_name_in = str(Path(Path.cwd(), 'filestorage'))
 folder_name_out = str(Path(Path.cwd(), 'filestorageOUT'))
 
 
-def handle_values(values):
+def handle_values_R_nadezh(values):
     threat_models = []
     count = 0
-    print('value handle : ', values)
+    # print('value handle : ', values)
     for v in values:
         model = ModelTreat()
         model.consruct_from_dir(v)
         threat_models.append({count: model.r_nadezh()})
         count = count + 1
-    print('threat_models', threat_models)
+    # print('threat_models', threat_models)
+    return threat_models
+
+
+def handle_values_R_integral(values):
+    threat_models = []
+    count = 0
+    # print('value handle : ', values)
+    for v in values:
+        model = ModelTreat()
+        model.consruct_from_dir(v)
+        threat_models.append({count: model.r_iinteg()})
+        count = count + 1
+    # print('threat_models', threat_models)
     return threat_models
 
 
