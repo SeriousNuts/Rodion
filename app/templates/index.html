@@ -17,9 +17,10 @@
     margin: 10px;
     vertical-align: middle;
    }
-        #delete_button {
+        .delete_button{
+            top: 0;
+            right: 0;
             position: relative;
-            left: 230px;
         }
     </style>
 </head>
@@ -128,13 +129,7 @@
         const numb_values_panel = document.getElementById("values_page").lastElementChild.id //добавляем id для панелей
         // чтобы было легче их сохранять
         divElementPanelPage.id = String(Number(numb_values_panel) + 1);
-        const delete_button = document.createElement("button");
-            delete_button.id = 'delete_button'
-            delete_button.class = 'delete_button'
-            delete_button.innerHTML = 'X'
-            delete_button.value = divElementPanelPage.id
-            delete_button.setAttribute('onClick', 'deletePanel(value)')
-        divElementPanelPage.appendChild(delete_button)
+
         for (let v = 0; v < variables.length; v++)//добавляем поля для ввода
         {
             const divElementValuePanel = document.createElement('div')
@@ -174,6 +169,13 @@
 
         divElementPanelPage.appendChild(number_ib);
         divElementPanelPage.appendChild(number_ib_label);
+                const delete_button = document.createElement("button");
+            delete_button.id = 'delete_button'
+            delete_button.class = 'delete_button'
+            delete_button.innerHTML = 'X'
+            delete_button.value = divElementPanelPage.id
+            delete_button.setAttribute('onClick', 'deletePanel(value)')
+        divElementPanelPage.appendChild(delete_button)
         document.getElementById('values_page').appendChild(divElementPanelPage)
     }
     function saveToJSON()//читаем данные панелей и формируем json
