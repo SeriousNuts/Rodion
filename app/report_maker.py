@@ -61,7 +61,7 @@ def excelmaker(handled_values):
     chart.y_axis.title = 'R_nadezhnoe'
     chart.x_axis.title = 'model'
     # сообщаем графику на основе каких значений строиться
-    exc_value = Reference(worksheet=ws, min_row=1, max_row=6, min_col=1, max_col=2)
+    exc_value = Reference(worksheet=ws, min_row=1, max_row=1, min_col=1, max_col=12)
     #   добавляем график в excel
     chart.add_data(exc_value, titles_from_data=False)
     #   добавляем названия столбцам графика

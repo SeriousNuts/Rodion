@@ -21,8 +21,8 @@ class ModelTreat:
     operand = ''
 
     def consruct_from_dir(self, value):
-
-        self.alfa = float(value['alfa']) / time_values[value['alfa_time']]
+        self.alfa = float(value['alfa'])
+        # self.alfa = float(value['alfa']) / time_values[value['alfa_time']]
         self.beta = float(value['beta']) / time_values[value['beta_time']]
         self.t_between = float(value['t_between']) / time_values[value['t_between_time']]
         self.t_diag = float(value['t_diag']) / time_values[value['t_diag_time']]
@@ -37,10 +37,10 @@ class ModelTreat:
         return int(1 / (self.t_between + self.t_diag))
 
     def p_impact(self):  # формула P(1) воздействия
-        if self.alfa == self.beta:
-            return (math.exp(-self.alfa * self.t_const)) * (1 - self.alfa * self.t_const)
+        if self.alfa == self.beta ** -1:
+            return (math.exp(-self.alfa * self.t_const)) * (1 + self.alfa * self.t_const)
         else:
-            return ((self.alfa - 1 / self.beta) ** -1) * (self.alfa * math.exp(self.t_const / self.beta) -
+            return ((self.alfa - 1 / self.beta) ** -1) * (self.alfa * math.exp(-self.t_const / self.beta) -
                                                           (self.beta ** -1 * (math.exp(-1 * self.alfa * self.t_const)))
                                                           )
 
@@ -64,17 +64,15 @@ class ModelTreat:
                 self.alfa * math.exp(-t_ost / self.beta) - math.pow(self.beta, -1) * math.exp(-self.alfa * t_ost))
 
     def p_impact2(self):  # P(2) воздействия
+        p_middle = self.p_middle()
+        p_end = self.p_end()
         return self.p_middle() * self.p_end()
 
     def r_nadezh(self):
-        return 1 - self.p_impact2()
-
-    def t_diag_iter(self):  # формула для более точного t_diag
-        t_diag_iter = self.t_diag
-        r_nad = self.r_nadezh()
-        for i in range(4):
-            t_diag_iter = t_diag_iter ** i * (1 - r_nad ** i) + r_nad ** i * self.t_recharge
-        return t_diag_iter
+        if self.t_const >= (self.t_between + self.t_diag):
+            return 1 - self.p_impact2()
+        else:
+            return 1 - self.p_impact()
 
     def r_integral(self):  # формула для R интегральное
         return 1 - (1 - self.r_nadezh()) * (1 - self.r_nadezh())

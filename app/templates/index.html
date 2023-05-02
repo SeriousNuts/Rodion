@@ -31,7 +31,7 @@
 
                 <div class="value">
         <h3>alfa
-            <input class="field" type="number" name="alfa" />
+            <input class="field" type="number" name="alfa" id="alfa" />
             <select id="alfa_time">
                     <option>секунда</option>
                     <option>минута</option>
@@ -44,7 +44,7 @@
                 </div>
         <div class="value">
         <h3>beta
-        <input class="field" type="number" name="beta" />
+        <input class="field" type="number" name="beta" id="beta" />
             <select id="beta_time">
                     <option>секунда</option>
                     <option>минута</option>
@@ -57,7 +57,7 @@
             </div>
                 <div class="value">
         <h3>t_between
-        <input class="field" type="number" name="t_between" />
+        <input class="field" type="number" name="t_between" id="t_between" />
              <select id="t_between_time">
                     <option>секунда</option>
                     <option>минута</option>
@@ -70,7 +70,7 @@
                 </div>
                 <div class="value">
         <h3>t_diag
-        <input class="field" type="number" name="t_diag" />
+        <input class="field" type="number" name="t_diag" id="t_diag" />
             <select id="t_diag_time">
                     <option>секунда</option>
                     <option>минута</option>
@@ -83,7 +83,7 @@
             </div>
             <div class="value">
         <h3>t_recharge
-        <input class="field" type="number" name="t_recharge"/>
+        <input class="field" type="number" name="t_recharge" id="t_recharge"/>
             <select id="t_recharge_time">
                     <option>секунда</option>
                     <option>минута</option>
@@ -96,7 +96,7 @@
             </div>
             <div class="value">
         <h3>t_const
-        <input class="field" type="number" name="t_const" />
+        <input class="field" type="number" name="t_const" id="t_const" />
         <select id="t_const_time">
                     <option>секунда</option>
                     <option>минута</option>
@@ -118,7 +118,7 @@
         </div>
           </div>
     <input type="submit" value="Расчитать параметры" onclick="sendjson()" />
-
+    <input type="submit" value="Показать значение", onclick="R_nad()">
 <script>
     function create()//создаём дополнительные панели по кнопке
     {
@@ -248,6 +248,50 @@
            console.log(e)
         }
     }
+    function p_impact(alfa, beta, t_const) {
+  // формула P(1) воздействия
+  if (alfa == Math.pow(beta, -1)) {
+      console.log('work')
+    return (Math.exp(-alfa * t_const)) * (1 + alfa * t_const);
+  } else {
+    return ((alfa - 1 / beta) ** -1) * (alfa * Math.exp(-t_const / beta) - (Math.pow(beta, -1) * (Math.exp(-1 * alfa * t_const))));
+  }
+}
+    function R_nad(){
+        alfa_time = document.getElementById('alfa_time').value
+        beta_time = document.getElementById('beta_time').value
+        t_between_time = document.getElementById('t_between_time').value
+        t_recharge_time = document.getElementById('t_recharge_time').value
+        t_diag_time = document.getElementById('t_diag_time').value
+        t_const_time = document.getElementById('t_const_time').value
+        time_values = {'секунда': 31536000, 'минута': 526000, 'час': 8766, 'неделя': 52, 'день': 365, 'месяц': 12, 'год': 1}
+        alfa = parseFloat(document.getElementById('alfa').value)
+        beta = parseFloat(document.getElementById('beta').value)/time_values[beta_time]
+        t_between = parseFloat(document.getElementById('t_between').value)/time_values[t_between_time]
+        t_rachrge = parseFloat(document.getElementById('t_recharge').value)/time_values[t_recharge_time]
+        t_diag = parseFloat(document.getElementById('t_diag').value)/time_values[t_diag_time]
+        t_const = parseFloat(document.getElementById('t_const').value)/time_values[t_const_time]
+
+        b_1 = Math.floor(t_const / (t_between + t_diag));
+        console.log("b_1", b_1)
+        //p_impact_ = p_impact(alfa, beta, t_const)
+
+        t_ost =  t_const - b_1 * (t_between + t_diag);
+
+        p_end = p_impact(alfa, beta, t_ost)
+
+        var p_middle;
+        var r_nad;
+        if (t_const >= (t_between + t_diag)) {
+            p_middle = Math.pow(p_impact(alfa, beta, t_between + t_diag), b_1)
+            r_nad = (1 - p_middle * p_end)
+        } else {
+            r_nad = (1 - p_impact(alfa, beta, t_const))
+        }
+        alert(r_nad);
+
+    }
+
 </script>
 {% endblock %}
 </body>

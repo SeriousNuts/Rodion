@@ -115,22 +115,6 @@ def register_form():
     return render_template('register.html', title='Регистрация', form=form)
 
 
-@app.route('/register_user', methods=['GET', 'POST'])
-def register_user():
-    if request.method == 'POST':
-        user = User()
-        name = request.form.get('username')
-        password = request.form.get('password')
-        try:
-            r = db_models.User(name=name)
-            db.session.add(r)
-            db.session.commit()
-        except:
-            db.session.rollback()
-        finally:
-            db.session.close()
-    return redirect(url_for('main_page'))
-
 
 @app.route("/logout")
 @login_required
