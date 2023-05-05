@@ -27,99 +27,8 @@
 <body>
     <main>
         <section class="model">
+            <form action="/report" method="post">
             <h2 class="model__title">Введите значения</h2>
-            <!-- <div id="values_page" class="values_page">
-            <div class="values_panel" id="1">
-    
-                    <div class="value">
-            <h3>alfa
-                <input class="field" type="number" name="alfa" id="alfa" />
-                <select id="alfa_time">
-                        <option>секунда</option>
-                        <option>минута</option>
-                        <option>час</option>
-                        <option>день</option>
-                        <option>неделя</option>
-                        <option>месяц</option>
-                        <option>год</option>
-                    </select></h3></h3>
-                    </div>
-            <div class="value">
-            <h3>beta
-            <input class="field" type="number" name="beta" id="beta" />
-                <select id="beta_time">
-                        <option>секунда</option>
-                        <option>минута</option>
-                        <option>час</option>
-                        <option>день</option>
-                        <option>неделя</option>
-                        <option>месяц</option>
-                        <option>год</option>
-                    </select></h3></h3>
-                </div>
-                    <div class="value">
-            <h3>t_between
-            <input class="field" type="number" name="t_between" id="t_between" />
-                 <select id="t_between_time">
-                        <option>секунда</option>
-                        <option>минута</option>
-                        <option>час</option>
-                        <option>день</option>
-                        <option>неделя</option>
-                        <option>месяц</option>
-                        <option>год</option>
-                    </select></h3></h3>
-                    </div>
-                    <div class="value">
-            <h3>t_diag
-            <input class="field" type="number" name="t_diag" id="t_diag" />
-                <select id="t_diag_time">
-                        <option>секунда</option>
-                        <option>минута</option>
-                        <option>час</option>
-                        <option>день</option>
-                        <option>неделя</option>
-                        <option>месяц</option>
-                        <option>год</option>
-                    </select></h3></h3>
-                </div>
-                <div class="value">
-            <h3>t_recharge
-            <input class="field" type="number" name="t_recharge" id="t_recharge"/>
-                <select id="t_recharge_time">
-                        <option>секунда</option>
-                        <option>минута</option>
-                        <option>час</option>
-                        <option>день</option>
-                        <option>неделя</option>
-                        <option>месяц</option>
-                        <option>год</option>
-                    </select></h3></h3>
-                </div>
-                <div class="value">
-            <h3>t_const
-            <input class="field" type="number" name="t_const" id="t_const" />
-            <select id="t_const_time">
-                        <option>секунда</option>
-                        <option>минута</option>
-                        <option>час</option>
-                        <option>день</option>
-                        <option>неделя</option>
-                        <option>месяц</option>
-                        <option>год</option>
-                    </select></h3>
-    
-                </div>
-            <input class="number_IB" name="number_IB" type="checkbox" ><label>Без учёта требований 	ИБ</label>
-                          <select>
-                        <option>И</option>
-                        <option>ИЛИ</option>
-                    </select>
-    
-            <input type="button" id="new_value" value="добавить модель" onclick="create()">
-            </div>
-            
-            </div> -->
             <div class="cards" id="cards">
                 <div class="card" id="1">
                     <div class="card-body">
@@ -132,7 +41,7 @@
                                     <input type="text" name="alfa" id="alfa" class="form-control" placeholder="">
                                 </div>
                                 <div class="col-4">
-                                    <select id="alfa_time" class="form-select">
+                                    <select id="alfa_time" class="form-select" name="alfa_time">
                                         <option>Секунда</option>
                                         <option>Минута</option>
                                         <option>Час</option>
@@ -153,7 +62,7 @@
                                     <input type="text" name="beta" id="beta" class="form-control" placeholder="">
                                 </div>
                                 <div class="col-4">
-                                    <select id="beta_time" class="form-select">
+                                    <select id="beta_time" name="beta_time" class="form-select">
                                         <option>Секунда</option>
                                         <option>Минута</option>
                                         <option>Час</option>
@@ -175,7 +84,7 @@
                                         placeholder="">
                                 </div>
                                 <div class="col-4">
-                                    <select id="t_between_time" class="form-select">
+                                    <select id="t_between_time" name="t_between_time" class="form-select">
                                         <option>Секунда</option>
                                         <option>Минута</option>
                                         <option>Час</option>
@@ -196,7 +105,7 @@
                                     <input type="text" name="t_diag" id="t_diag" class="form-control" placeholder="">
                                 </div>
                                 <div class="col-4">
-                                    <select id="t_diag_time" class="form-select">
+                                    <select id="t_diag_time" name="t_diag_time" class="form-select">
                                         <option>Секунда</option>
                                         <option>Минута</option>
                                         <option>Час</option>
@@ -218,7 +127,7 @@
                                         placeholder="">
                                 </div>
                                 <div class="col-4">
-                                    <select id="t_recharge_time" class="form-select">
+                                    <select id="t_recharge_time" name="t_recharge_time" class="form-select">
                                         <option>Секунда</option>
                                         <option>Минута</option>
                                         <option>Час</option>
@@ -239,7 +148,7 @@
                                     <input type="text" name="t_const" id="t_const" class="form-control" placeholder="">
                                 </div>
                                 <div class="col-4">
-                                    <select id="t_const_time" class="form-select">
+                                    <select id="t_const_time" name="t_const_time" class="form-select">
                                         <option>Секунда</option>
                                         <option>Минута</option>
                                         <option>Час</option>
@@ -260,8 +169,9 @@
                 </div>
             </div>
             <div class="model__btns">
-                <button onclick="sendjson()" class="btn btn-success">Расчитать параметры</button>
-            </div>
+                <button class="btn btn-success">Расчитать параметры</button>
+                </div>
+                </form>
         </section>
     </main>
 

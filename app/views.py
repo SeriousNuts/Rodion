@@ -26,6 +26,7 @@ def load_user(user_id):
 @app.route('/report', methods=['GET', 'POST'])
 def report():
     model_treat = ModelTreat()
+    print(request.form.to_dict())
     req_params = request.get_json('report', silent=True)  # принимаем результаты в формате json
     print('view report : ', req_params)
     if req_params is not None:
