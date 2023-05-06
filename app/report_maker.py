@@ -73,7 +73,7 @@ def excelmaker(handled_values_r_nad, graph_place_r_nad, handled_values_r_int, gr
     #   добавляем график в excel
     chart.add_data(exc_value, titles_from_data=False)
     #   добавляем названия столбцам графика
-    categor = Reference(worksheet=ws, min_col=1, min_row=1, max_row=6)
+    categor = Reference(worksheet=ws, min_col=1, min_row=1, max_row=len(r_nad_list))
     chart.set_categories(categor)
     #   добавляем график в лист excel
     ws.add_chart(chart, graph_place_r_nad)
@@ -96,11 +96,13 @@ def excelmaker(handled_values_r_nad, graph_place_r_nad, handled_values_r_int, gr
     chart.y_axis.title = 'R_inegralnoe'
     chart.x_axis.title = 'model'
     # сообщаем графику на основе каких значений строиться
-    exc_value = Reference(worksheet=ws, min_row=len(r_nad_list) + 1, max_row=len(r_int_list) + len(r_nad_list), min_col=2, max_col=2)
+    exc_value = Reference(worksheet=ws, min_row=len(r_nad_list) + 1,
+                          max_row=len(r_int_list) + len(r_nad_list), min_col=2, max_col=2)
     #   добавляем график в excel
     chart.add_data(exc_value, titles_from_data=False)
     #   добавляем названия столбцам графика
-    categor = Reference(worksheet=ws, min_col=1, min_row=1, max_row=6)
+    categor = Reference(worksheet=ws, min_col=1,
+                        min_row=len(r_nad_list) + len(r_int_list) + len(r_nad_list), max_row=6)
     chart.set_categories(categor)
     #   добавляем график в лист excel
     ws.add_chart(chart, graph_place_r_int)
@@ -134,6 +136,7 @@ def save_report(filename):
     finally:
         db.session.close()
         os.remove(str(Path(folder_name_in, filename)))
+
 
 
 def readreport(data, filename):

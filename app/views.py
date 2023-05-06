@@ -28,18 +28,18 @@ def load_user(user_id):
 def report():
     model_treat = ModelTreat()
     req_params = request.get_json('report', silent=True)  # принимаем результаты в формате json
+    template = 'report.html'
     if req_params is not None:
-        #print(req_params)
         try:
             handled_values = report_maker.handle_values_R_nadezh(req_params)
             handled_values_r_int = report_maker.handle_values_R_integral(req_params)
             filename = report_maker.excelmaker(handled_values, 'A14', handled_values_r_int, 'J14')
             report_maker.save_report(filename)
         except Exception as e:
+            template = 'report_error.html'
             print('def report')
             print(e)
-    return render_template('report.html',
-                           model=model_treat)
+    return render_template(template)
 
 
 @app.route('/gost_69420')
@@ -121,7 +121,6 @@ def register_form():
         except Exception as e:
             print(e)
     return render_template('register.html', title='Регистрация', form=form)
-
 
 
 @app.route("/logout")
