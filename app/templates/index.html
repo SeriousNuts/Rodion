@@ -161,7 +161,7 @@
                 </div>
             </div>
             <div class="model__btns">
-                <button class="btn btn-success" onclick="sendjson()">Расчитать параметры</button>
+                <button class="btn btn-success submit-btn" onclick="sendjson()">Расчитать параметры</button>
                 </div>
         </section>
     </main>
@@ -257,7 +257,15 @@
             }
             httpRequest.open('POST', 'report');
             httpRequest.send(data);
-            window.location.replace('report')
+            window.location.replace('report');
+        }
+        const submit_btns = document.querySelectorAll('.submit-btn');
+        submit_btns.forEach(btn=> {
+            btn.addEventListener('click', set_To_ls)
+        })
+        function set_To_ls(){
+            const data = getCardsData()
+            localStorage.setItem("without_risks", data)
         }
     </script>
     <!-- {% endblock %} -->
