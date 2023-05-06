@@ -28,10 +28,11 @@ def report():
     model_treat = ModelTreat()
     req_params = request.get_json('report', silent=True)  # принимаем результаты в формате json
     if req_params is not None:
-        print(req_params)
+        #print(req_params)
         try:
             handled_values = report_maker.handle_values_R_nadezh(req_params)
-            filename = report_maker.excelmaker(handled_values, 'A14')
+            handled_values_r_int = report_maker.handle_values_R_integral(req_params)
+            filename = report_maker.excelmaker(handled_values, 'A14', handled_values_r_int, 'J14')
             report_maker.save_report(filename)
         except Exception as e:
             print('def report')
