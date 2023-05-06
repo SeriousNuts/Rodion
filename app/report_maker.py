@@ -27,8 +27,9 @@ def handle_values_R_nadezh(values):
     for v in values:
         model = ModelTreat()
         model.consruct_from_dir(v)
-        threat_models.append({count: model.r_nadezh()})
-        count = "R надёжное эл. : " + str(count + 1)
+        key = "R надёжное эл. : " + str(count)
+        threat_models.append({key: model.r_nadezh()})
+        count = count + 1
     # print('threat_models', threat_models)
     return threat_models
 
@@ -40,8 +41,9 @@ def handle_values_R_integral(values):
     for v in values:
         model = ModelTreat()
         model.consruct_from_dir(v)
-        threat_models.append({count: model.r_integral()})
-        count = "R интегральное эл. : " + str(count + 1)
+        key = "R интегральное эл. : " + str(count)
+        threat_models.append({key: model.r_integral()})
+        count = count + 1
     # print('threat_models', threat_models)
     return threat_models
 

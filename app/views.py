@@ -3,6 +3,7 @@ from urllib.parse import urlparse, urljoin
 import uuid0
 from flask import render_template, request, send_from_directory, redirect, url_for
 from flask_login import login_required, LoginManager, login_user, current_user, UserMixin, logout_user
+from sqlalchemy import func
 
 from app import app, db_models, db, login_manager
 from .db_models import User, set_password, Report
@@ -50,10 +51,16 @@ def index():
 @app.route('/download')
 @app.route('/download/<filename>')
 @login_required
-def download(filename):
-    file = Report.query.filter(
-        Report.name == filename
-    ).first()
+def download(filename=None):
+    if filename is not None:
+        file = Report.query.filter(
+            Report.name == filename,
+            Report.owner == current_user.name
+        ).first()
+    else:
+        file = Report.query.filter(
+            Report.owner == current_user.name,
+        ).order_by(Report.date.desc()).limit(1).first()
     download_string = report_maker.readreport(file.file, file.name)
     return send_from_directory(download_string, file.name)
 
