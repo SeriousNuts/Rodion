@@ -21,13 +21,13 @@ folder_name_out = str(Path(Path.cwd(), 'filestorageOUT'))
 def handle_values_R_nadezh(values):
     threat_models = []
     count = 0
-    # print('value handle : ', values)
+    print('value handle : ', values)
     for v in values:
         model = ModelTreat()
         model.consruct_from_dir(v)
         threat_models.append({count: model.r_nadezh()})
         count = count + 1
-    # print('threat_models', threat_models)
+    print('threat_models', threat_models)
     return threat_models
 
 
@@ -44,31 +44,35 @@ def handle_values_R_integral(values):
     return threat_models
 
 
-def excelmaker(handled_values):
+def excelmaker(handled_values, graph_place):
     wb = Workbook()
     ws = wb.active
     #   добавляем записи в таблицу excel
-    somelist = []
+    test_list = []
+
     for dict_values in handled_values:
+        somelist = []
         for value in dict_values:
             somelist.append(value)
             somelist.append(dict_values[value])
-        # somelist = [v, handled_values[v]]
-        ws.append(somelist)
+            test_list.append(somelist)
+
+    for row in test_list:
+        ws.append(row)
     #   инициализиуем график
     chart = BarChart()
     #   Инициализируем оси графика
     chart.y_axis.title = 'R_nadezhnoe'
     chart.x_axis.title = 'model'
     # сообщаем графику на основе каких значений строиться
-    exc_value = Reference(worksheet=ws, min_row=1, max_row=1, min_col=1, max_col=12)
+    exc_value = Reference(worksheet=ws, min_row=1, max_row=12, min_col=2, max_col=2)
     #   добавляем график в excel
     chart.add_data(exc_value, titles_from_data=False)
     #   добавляем названия столбцам графика
     categor = Reference(worksheet=ws, min_col=1, min_row=1, max_row=6)
     chart.set_categories(categor)
     #   добавляем график в лист excel
-    ws.add_chart(chart, 'A10')
+    ws.add_chart(chart, graph_place)
     #   генерируем уникальное имя файла
     report_name = ''.join(random.choices(string.ascii_lowercase, k=8)) + '_report.xlsx'
     # сохраняем отчёт в память
@@ -78,7 +82,7 @@ def excelmaker(handled_values):
 
 
 #   сохраняем отчёт в БД
-def savereport(filename):
+def save_report(filename):
     timestamp = calendar.timegm(time.gmtime())
     with open(str(Path(folder_name_in, filename)), 'rb') as file:
         # записываем в формат blob

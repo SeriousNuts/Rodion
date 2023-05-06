@@ -26,14 +26,13 @@ def load_user(user_id):
 @app.route('/report', methods=['GET', 'POST'])
 def report():
     model_treat = ModelTreat()
-    print(request.form.to_dict())
     req_params = request.get_json('report', silent=True)  # принимаем результаты в формате json
-    print('view report : ', req_params)
     if req_params is not None:
+        print(req_params)
         try:
             handled_values = report_maker.handle_values_R_nadezh(req_params)
-            filename = report_maker.excelmaker(handled_values)
-            report_maker.savereport(filename)
+            filename = report_maker.excelmaker(handled_values, 'A14')
+            report_maker.save_report(filename)
         except Exception as e:
             print('def report')
             print(e)

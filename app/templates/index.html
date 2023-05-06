@@ -11,7 +11,7 @@
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>
     <header class="header">
-        <img src="../../header-logo.png" alt="" class="header__logo">
+        <img src="../static/header-logo.png" alt="" class="header__logo">
         <h1 class="header__title">Оценка рисков в процессах жизненного цикла системы</h1>
         <ul class="header-links">
             <li class="header-links__item"><a href="/main" class="header-links__link">Главная страница</a></li>
@@ -27,7 +27,6 @@
 <body>
     <main>
         <section class="model">
-            <form action="/report" method="post">
             <h2 class="model__title">Введите значения</h2>
             <div class="cards" id="cards">
                 <div class="card" id="1">
@@ -38,16 +37,10 @@
                                     <label for="alfa" class="col-form-label">σ</label>
                                 </div>
                                 <div class="col-auto">
-                                    <input type="text" name="alfa" id="alfa" class="form-control" placeholder="">
+                                    <input type="number" name="alfa" id="alfa" class="form-control" placeholder="">
                                 </div>
                                 <div class="col-4">
                                     <select id="alfa_time" class="form-select" name="alfa_time">
-                                        <option>Секунда</option>
-                                        <option>Минута</option>
-                                        <option>Час</option>
-                                        <option>День</option>
-                                        <option>Неделя</option>
-                                        <option>Месяц</option>
                                         <option>Год</option>
                                     </select>
                                 </div>
@@ -59,7 +52,7 @@
                                     <label for="beta" class="col-form-label">β</label>
                                 </div>
                                 <div class="col-auto">
-                                    <input type="text" name="beta" id="beta" class="form-control" placeholder="">
+                                    <input type="number" name="beta" id="beta" class="form-control" placeholder="">
                                 </div>
                                 <div class="col-4">
                                     <select id="beta_time" name="beta_time" class="form-select">
@@ -80,7 +73,7 @@
                                     <label for="t_between" class="col-form-label">T<span>меж</span></label>
                                 </div>
                                 <div class="col-auto">
-                                    <input type="text" name="t_between" id="t_between" class="form-control"
+                                    <input type="number" name="t_between" id="t_between" class="form-control"
                                         placeholder="">
                                 </div>
                                 <div class="col-4">
@@ -102,7 +95,7 @@
                                     <label for="t_diag" class="col-form-label">T<span>диаг</span></label>
                                 </div>
                                 <div class="col-auto">
-                                    <input type="text" name="t_diag" id="t_diag" class="form-control" placeholder="">
+                                    <input type="number" name="t_diag" id="t_diag" class="form-control" placeholder="">
                                 </div>
                                 <div class="col-4">
                                     <select id="t_diag_time" name="t_diag_time" class="form-select">
@@ -123,7 +116,7 @@
                                     <label for="t_recharge" class="col-form-label">T<span>восст</span></label>
                                 </div>
                                 <div class="col-auto">
-                                    <input type="text" name="t_recharge" id="t_recharge" class="form-control"
+                                    <input type="number" name="t_recharge" id="t_recharge" class="form-control"
                                         placeholder="">
                                 </div>
                                 <div class="col-4">
@@ -145,7 +138,7 @@
                                     <label for="t_const" class="col-form-label">T<span>зад</span></label>
                                 </div>
                                 <div class="col-auto">
-                                    <input type="text" name="t_const" id="t_const" class="form-control" placeholder="">
+                                    <input type="number" name="t_const" id="t_const" class="form-control" placeholder="">
                                 </div>
                                 <div class="col-4">
                                     <select id="t_const_time" name="t_const_time" class="form-select">
@@ -161,148 +154,19 @@
                             </div>
                         </div>
                         <div class="value__btns row">
-                            <button class="btn btn-success col-auto create-elem-btn" onclick="createElemHandler(this)">Добавить элемент</button>
-                            <button class="btn btn-danger col-auto delete-elem-btn" onclick="deleteElemHandler(this)">Удалить элемент</button>
+                            <button type="button" class="btn btn-success col-auto create-elem-btn" onclick="createElemHandler(this)">Добавить элемент</button>
+                            <button type="button" class="btn btn-danger col-auto delete-elem-btn" onclick="deleteElemHandler(this)">Удалить элемент</button>
                         </div>
-
                     </div>
                 </div>
             </div>
             <div class="model__btns">
-                <button class="btn btn-success">Расчитать параметры</button>
+                <button class="btn btn-success" onclick="sendjson()">Расчитать параметры</button>
                 </div>
-                </form>
         </section>
     </main>
 
     <script>
-        function create()//создаём дополнительные панели по кнопке
-        {
-            const divElementPanelPage = document.createElement("div");
-            divElementPanelPage.className = 'card'
-            const variables = ['alfa', 'beta', 't_between', 't_diag', 't_recharge', 't_const'];
-            const times = ['секунда', 'минута', 'час', 'день', 'неделя', 'месяц', 'год']
-            const numb_values_panel = document.getElementById("cards").lastElementChild.id //добавляем id для панелей
-            // чтобы было легче их сохранять
-            divElementPanelPage.id = String(Number(numb_values_panel) + 1);
-
-            for (let v = 0; v < variables.length; v++)//добавляем поля для ввода
-            {
-                const divElementValuePanel = document.createElement('div')
-                divElementValuePanel.className = 'value'
-                const head_h3 = document.createElement("h3");
-                const input = document.createElement("input");
-                head_h3.innerHTML = variables[v];
-                input.name = variables[v];
-                input.class = 'inputs';
-                input.type = 'number'
-                const time_select = document.createElement("select")
-                for (let t = 0; t < times.length; t++)//добавляем выбор времени
-                {
-                    const time_option = document.createElement("option")
-                    time_option.innerHTML = times[t]
-                    time_select.appendChild(time_option)
-                }
-                head_h3.appendChild(input);
-                head_h3.appendChild(time_select)
-                divElementValuePanel.appendChild(head_h3);
-                divElementPanelPage.appendChild(divElementValuePanel)
-            }
-            const option = document.createElement("select");
-            const select_beta_and = document.createElement("option");
-            select_beta_and.innerHTML = "И";
-            option.appendChild(select_beta_and)
-            const select_beta_or = document.createElement("option");
-            select_beta_or.innerHTML = "ИЛИ";
-            option.appendChild(select_beta_or);
-            divElementPanelPage.appendChild(option)
-            const number_ib = document.createElement('input');
-            number_ib.name = 'number_IB';
-            number_ib.class = 'number_IB';
-            number_ib.type = 'checkbox';
-            const number_ib_label = document.createElement('label');
-            number_ib_label.innerHTML = 'Без учёта требований ИБ';
-
-            divElementPanelPage.appendChild(number_ib);
-            divElementPanelPage.appendChild(number_ib_label);
-            const delete_button = document.createElement("button");
-            delete_button.id = 'delete_button'
-            delete_button.class = 'delete_button'
-            delete_button.innerHTML = 'X'
-            delete_button.value = divElementPanelPage.id
-            delete_button.setAttribute('onClick', 'deletePanel(value)')
-            divElementPanelPage.appendChild(delete_button)
-            document.getElementById('values_page').appendChild(divElementPanelPage)
-        }
-        function saveToJSON()//читаем данные панелей и формируем json
-        {
-            var dict_panels = [];
-            var panels_from_html = document.getElementsByClassName("values_panel")
-            for (let i = 0; i <= panels_from_html.length; i++) {
-                try {
-                    //первое число i это панель
-
-                    const alfa = panels_from_html.item(i).children.item(0).children.item(0).children.item(0).value;
-                    const alfa_time = panels_from_html.item(i).children.item(0).children.item(0).children.item(1).value;
-                    const beta = panels_from_html.item(i).children.item(1).children.item(0).children.item(0).value;
-                    const beta_time = panels_from_html.item(i).children.item(1).children.item(0).children.item(1).value;
-                    const t_between = panels_from_html.item(i).children.item(2).children.item(0).children.item(0).value;
-                    const t_between_time = panels_from_html.item(i).children.item(2).children.item(0).children.item(1).value;
-                    const t_diag = panels_from_html.item(i).children.item(3).children.item(0).children.item(0).value;
-                    const t_diag_time = panels_from_html.item(i).children.item(3).children.item(0).children.item(1).value;
-                    const t_recharge = panels_from_html.item(i).children.item(4).children.item(0).children.item(0).value;
-                    const t_recharge_time = panels_from_html.item(i).children.item(4).children.item(0).children.item(1).value;
-                    const t_const = panels_from_html.item(i).children.item(5).children.item(0).children.item(0).value;
-                    const t_const_time = panels_from_html.item(i).children.item(5).children.item(0).children.item(1).value;
-
-                    const ib_number = panels_from_html.item(i).children.namedItem("number_IB").checked;
-
-                    const json = {
-                        "alfa": alfa,
-                        "alfa_time": alfa_time,
-                        "beta": beta,
-                        "beta_time": beta_time,
-                        "t_between": t_between,
-                        "t_between_time": t_between_time,
-                        "t_diag": t_diag,
-                        "t_diag_time": t_diag_time,
-                        "t_recharge": t_recharge,
-                        "t_recharge_time": t_recharge_time,
-                        "t_const": t_const,
-                        "t_const_time": t_const_time,
-                        "ib_checked": ib_number
-                    }
-                    dict_panels.push(json);
-                }
-                catch (e) {
-                    console.log(e);
-                }
-            }
-            return JSON.stringify(dict_panels);
-        }
-
-        function sendjson()//отправка json во flask
-        {
-            data = saveToJSON()
-            const httpRequest = new XMLHttpRequest();
-
-            if (!httpRequest) {
-                alert('Giving up :( Cannot create an XMLHTTP instance');
-                return false;
-            }
-            httpRequest.open('POST', 'report');
-            httpRequest.send(data);
-            window.location.replace('report')
-        }
-        function deletePanel(value) {
-            panel = document.getElementById(value)
-            try {
-                panel.remove()
-            }
-            catch (e) {
-                console.log(e)
-            }
-        }
         function p_impact(alfa, beta, t_const) {
             // формула P(1) воздействия
             if (alfa == Math.pow(beta, -1)) {
@@ -363,6 +227,37 @@
             const cardsWrapper = document.getElementById('cards'); // Родительский элемент для всех карточек
 
             cardsWrapper.removeChild(document.getElementById(`${btn.parentElement.parentElement.parentElement.getAttribute('id')}`)) // Удаление нужного элемента из родительского 
+        }
+        function getCardsData() {
+            const cardsWrapper = document.getElementById('cards'); // Родительский элемент для всех карточек
+            var values_ = [];
+            for (let i = 0; i < cardsWrapper.childElementCount; i++) {
+                let inputs = cardsWrapper.children.item(i).getElementsByTagName('input'); // Получаем все эллементы input
+                let selects = cardsWrapper.children.item(i).getElementsByTagName('select')
+                let map = new Map(); // Создаём мап для эллементов
+                for (let j = 0; j < inputs.length; j++) {
+                    map.set(inputs[j].name, inputs[j].value); // Добавляем input эллементы в MAP
+                    map.set(selects[j].name, selects[j].value);// Добавляем select эллементы в MAP
+                }
+                let object = {};
+                map.forEach((value, key) => { // Переводим мап в объекты js
+                    object[key] = value;
+                });
+                values_.push(object); // Переводим объекты в json
+            }
+            return JSON.stringify(values_)
+        }
+        function sendjson() {
+            data = getCardsData()
+            const httpRequest = new XMLHttpRequest();
+
+            if (!httpRequest) {
+                alert('Giving up :( Cannot create an XMLHTTP instance');
+                return false;
+            }
+            httpRequest.open('POST', 'report');
+            httpRequest.send(data);
+            window.location.replace('report')
         }
     </script>
     <!-- {% endblock %} -->
