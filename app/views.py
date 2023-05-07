@@ -26,14 +26,20 @@ def load_user(user_id):
 
 @app.route('/report', methods=['GET', 'POST'])
 def report():
-    model_treat = ModelTreat()
     req_params = request.get_json('report', silent=True)  # принимаем результаты в формате json
     template = 'report.html'
+    print(req_params)
     if req_params is not None:
+        print(type(req_params))
+        half = len(req_params) // 2
+        r_without_risks = req_params[:half]
+        r_risks = req_params[half:]
         try:
-            handled_values = report_maker.handle_values_R_nadezh(req_params)
-            handled_values_r_int = report_maker.handle_values_R_integral(req_params)
-            filename = report_maker.excelmaker(handled_values, 'A14', handled_values_r_int, 'J14')
+            handled_values_without_risks = report_maker.handle_values_R_nadezh(r_without_risks)
+            handled_values_risks = report_maker.handle_values_R_nadezh(r_risks)
+            handled_values_r_int = report_maker.handle_values_R_integral(r_risks, r_without_risks)
+            filename = report_maker.excelmaker(handled_values_risks, 'A14', handled_values_r_int, 'S14',
+                                               handled_values_without_risks, 'J14')
             report_maker.save_report(filename)
         except Exception as e:
             template = 'report_error.html'
@@ -46,6 +52,12 @@ def report():
 @login_required
 def index():
     return render_template('index.html')
+
+
+@app.route('/risks')
+@login_required
+def risks():
+    return render_template('risks.html')
 
 
 @app.route('/download')

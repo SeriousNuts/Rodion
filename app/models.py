@@ -54,5 +54,5 @@ class ModelTreat:
         else:
             return 1 - self.p_impact(self.t_const)
 
-    def r_integral(self):  # формула для R интегральное
-        return 1 - (1 - self.r_nadezh()) * (1 - self.r_nadezh())
+    def r_integral(self, r_narush):  # формула для R интегральное
+        return 1 - (1 - self.r_nadezh()) * (1 - r_narush)
