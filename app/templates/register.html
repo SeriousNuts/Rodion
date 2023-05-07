@@ -26,7 +26,6 @@
         <section class="register">
             <h1 class="register__title">Регистрация</h1>
             <form action="/register" method="post" validate>
-                <!-- {{ form.hidden_tag() }} -->
                 <div class="card">
                     <div class="card-body">
                         <div class="mb-3">
@@ -44,27 +43,6 @@
             </form>
         </section>
     </main>
-    <!-- <div class="register">
-        
-        <form action="/register" method="post" validate>
-            {{ form.hidden_tag() }}
-            <p>
-                {{ form.username.label }}<br>
-                {{ form.username(size=32) }}
-            </p>
-            <p>
-                {{ form.password.label }}<br>
-                {{ form.password(size=32) }}
-            </p>
-
-            <p>
-                {{form.password_repeat.label}}<br>
-                {{form.password_repeat(size=32)}}
-            </p>
-            <p>{{form.submit_reg}}</p>
-        </form>
-        <p></p>
-    </div> -->
     <footer class="footer">
         <ul class="footer-contacts">
             <li class="footer-contacts__item"><a href="#" class="footer-contacts__link">+7 923 123 12 13</a></li>

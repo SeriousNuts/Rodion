@@ -119,12 +119,12 @@ def check_login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register_form():
-    form = RegistrationForm()
-    if form.validate_on_submit():
+    form = request.form.to_dict()
+    if form is not None:
         try:
             newuser = User()
-            newuser.name = form.username.data
-            newuser.password = set_password(form.password.data)
+            newuser.name = form['username']
+            newuser.password = set_password(form['password'])
             newuser.UUID = str(uuid0.generate())
             u: User = db_models.User(name=newuser.name, password=newuser.password, UUID=newuser.UUID)  # type: ignore
             db.session.add(u)
