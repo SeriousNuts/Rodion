@@ -32,8 +32,8 @@ def report():
         r_without_risks = req_params[0]
         r_risks = req_params[1]
         try:
-            handled_values_r_risk = report_maker.handle_values_R_nadezh(r_without_risks)
-            handled_values_nad = report_maker.handle_values_R_nadezh(r_risks)
+            handled_values_r_risk = report_maker.handle_values_R_nadezh(r_risks) # r narush
+            handled_values_nad = report_maker.handle_values_R_nadezh(r_without_risks) # r nad
             handled_values_r_int = report_maker.handle_values_R_integral(handled_values_r_risk, handled_values_nad)
             graphs = report_maker.graph_maker(handled_values_nad, handled_values_r_risk)
             filename = report_maker.document_maker(handled_values_r_risk,
