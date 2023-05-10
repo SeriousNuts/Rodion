@@ -245,10 +245,12 @@
                 });
                 values_.push(object); // Переводим объекты в json
             }
-            data = localStorage.getItem('without_risks')
-            data = JSON.parse(`${data}`)
-            values_.push(...data)
-            return JSON.stringify(values_)
+            data = []
+            data_ls = localStorage.getItem('without_risks')
+            data_ls = JSON.parse(`${data_ls}`)
+            data.push(data_ls)
+            data.push(values_)
+            return JSON.stringify(data)
         }
         function sendjson() {
             data = getCardsData()

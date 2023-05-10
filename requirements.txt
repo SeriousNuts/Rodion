@@ -7,3 +7,6 @@ Werkzeug~=2.2.2
 alembic~=1.9.2
 flask-wtf~=1.1.1
 flask_migrate==4.0.4
+matplotlib~=3.7.1
+docx~=0.2.4
+docxtpl~=0.16.6

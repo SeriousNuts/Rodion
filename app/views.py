@@ -1,15 +1,14 @@
+import traceback
 from urllib.parse import urlparse, urljoin
 
 import uuid0
 from flask import render_template, request, send_from_directory, redirect, url_for
-from flask_login import login_required, LoginManager, login_user, current_user, UserMixin, logout_user
-from sqlalchemy import func
+from flask_login import login_required, login_user, current_user, logout_user
 
 from app import app, db_models, db, login_manager
-from .db_models import User, set_password, Report
-from .models import ModelTreat
 from app import report_maker
-from app.forms.LoginForm import LoginForm, RegistrationForm
+from app.forms.LoginForm import LoginForm
+from .db_models import User, set_password, Report
 
 
 def is_safe_url(target):
@@ -30,21 +29,21 @@ def report():
     template = 'report.html'
     print(req_params)
     if req_params is not None:
-        print(type(req_params))
-        half = len(req_params) // 2
-        r_without_risks = req_params[:half]
-        r_risks = req_params[half:]
+        r_without_risks = req_params[0]
+        r_risks = req_params[1]
         try:
-            handled_values_without_risks = report_maker.handle_values_R_nadezh(r_without_risks)
-            handled_values_risks = report_maker.handle_values_R_nadezh(r_risks)
-            handled_values_r_int = report_maker.handle_values_R_integral(r_risks, r_without_risks)
-            filename = report_maker.excelmaker(handled_values_risks, 'A14', handled_values_r_int, 'S14',
-                                               handled_values_without_risks, 'J14')
+            handled_values_r_risk = report_maker.handle_values_R_nadezh(r_without_risks)
+            handled_values_nad = report_maker.handle_values_R_nadezh(r_risks)
+            handled_values_r_int = report_maker.handle_values_R_integral(handled_values_r_risk, handled_values_nad)
+            graphs = report_maker.graph_maker(handled_values_nad, handled_values_r_risk)
+            filename = report_maker.document_maker(handled_values_r_risk,
+                                                   handled_values_r_int, handled_values_nad, graphs)
             report_maker.save_report(filename)
         except Exception as e:
             template = 'report_error.html'
             print('def report')
             print(e)
+            print(traceback.format_exc())
     return render_template(template)
 
 

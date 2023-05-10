@@ -1,18 +1,18 @@
+import calendar
 import os
 import random
-
-import openpyxl
-from flask_login import current_user
-from openpyxl import Workbook
-from openpyxl.chart import BarChart, Reference
-from app import models, db_models, db
-import calendar
+import string
 import time
 from datetime import datetime
 from pathlib import Path
-from app.models import ModelTreat
-import string
+
 import matplotlib.pyplot as plt
+from docx.shared import Mm
+from docxtpl import DocxTemplate, InlineImage
+from flask_login import current_user
+
+from app import db_models, db, models
+from app.models import ModelTreat
 
 #   каталог для загружаемых файлов
 folder_name_in = str(Path(Path.cwd(), 'filestorage'))
@@ -21,133 +21,57 @@ folder_name_out = str(Path(Path.cwd(), 'filestorageOUT'))
 
 
 def handle_values_R_nadezh(values):
-    threat_models = []
-    count = 0
+    threat_models = {}
+    count = 1
     # print('value handle : ', values)
     for v in values:
         model = ModelTreat()
         model.consruct_from_dir(v)
-        key = "R надёжное эл. : " + str(count)
-        threat_models.append({key: model.r_nadezh()})
+        key = str(count)
+        threat_models.update({key + " элем.": model.r_nadezh()})
         count = count + 1
     # print('threat_models', threat_models)
+    threat_models.update({'За все действия': sum(threat_models.values())})
     return threat_models
 
 
 def handle_values_R_integral(values_risks, value_without_risks):
-    threat_models = []
-    count = 0
-    # print('value handle : ', values)
-    for v_risks, v_w_risks in zip(values_risks, value_without_risks):
-        model_risks = ModelTreat()
-        model_risks.consruct_from_dir(v_risks)
-        model_w_risks = ModelTreat()
-        model_w_risks.consruct_from_dir(v_w_risks)
-        key = "R интегральное эл. : " + str(count)
-        threat_models.append({key: model_risks.r_integral(model_w_risks.r_nadezh())})
-        count = count + 1
-    # print('threat_models', threat_models)
+    threat_models = {}
+    threat_models.update({'R интегр': models.r_integral(values_risks["За все действия"],
+                                                        value_without_risks["За все действия"])})
     return threat_models
 
 
-def excelmaker(handled_values_r_nad, graph_r_nad,
-               handled_values_r_int, graph_r_int, handled_values_r_risks, graph_r_risks
-               ):
-    wb = Workbook()
-    ws = wb.active
-    #   добавляем записи в таблицу excel
-    r_nad_list = []
+def graph_maker(handled_values_r_nad, handled_values_r_risks):
+    r_nad_name = ''.join(random.choices(string.ascii_lowercase, k=7)) + 'r_nad.png'
+    r_nad_graph = plt.figure()
+    plt.bar(handled_values_r_nad.keys(), handled_values_r_nad.values())
+    r_nad_graph.savefig(str(Path(Path.cwd(), 'filestorage', r_nad_name)), dpi=100)
 
-    for dict_values in handled_values_r_nad:
-        r_nad_some_list = []  # переоходный лист для добавлени эллементов
-        for value in dict_values:
-            r_nad_some_list.append(value)
-            r_nad_some_list.append(dict_values[value])
-            r_nad_list.append(r_nad_some_list)
+    r_risk_name = ''.join(random.choices(string.ascii_lowercase, k=7)) + 'r_risk.png'
+    r_risk_graph = plt.figure()
 
-    for row in r_nad_list:
-        ws.append(row)
-    #   инициализиуем график
-    chart = BarChart()
-    #   Инициализируем оси графика
-    chart.y_axis.title = 'R_nadezhnoe'
-    chart.x_axis.title = 'model'
-    # сообщаем графику на основе каких значений строиться
-    exc_value = Reference(worksheet=ws, min_row=1, max_row=len(r_nad_list), min_col=2, max_col=2)
-    #   добавляем график в excel
-    chart.add_data(exc_value, titles_from_data=False)
-    #   добавляем названия столбцам графика
-    categor = Reference(worksheet=ws, min_col=1, min_row=1, max_row=len(r_nad_list))
-    chart.set_categories(categor)
-    #   добавляем график в лист excel
-    ws.add_chart(chart, graph_r_nad)
-    #   добавляем записи в таблицу excel
+    plt.bar(handled_values_r_risks.keys(), handled_values_r_risks.values())
+    r_risk_graph.savefig(str(Path(Path.cwd(), 'filestorage', r_risk_name)), dpi=100)
 
-    r_int_list = []
-
-    for dict_values in handled_values_r_int:
-        r_int_some_list = []  # Промежуточный список
-        for value in dict_values:
-            r_int_some_list.append(value)
-            r_int_some_list.append(dict_values[value])
-            r_int_list.append(r_int_some_list)
-
-    for row in r_int_list:
-        ws.append(row)
-    #   инициализиуем график
-    chart = BarChart()
-    #   Инициализируем оси графика
-    chart.y_axis.title = 'R_inegralnoe'
-    chart.x_axis.title = 'model'
-    # сообщаем графику на основе каких значений строиться
-    exc_value = Reference(worksheet=ws, min_row=len(r_nad_list) + 1,
-                          max_row=len(r_int_list) + len(r_nad_list), min_col=2, max_col=2)
-    #   добавляем график в excel
-    chart.add_data(exc_value, titles_from_data=False)
-    #   добавляем названия столбцам графика
-    categor = Reference(worksheet=ws, min_col=1,
-                        min_row=len(r_nad_list) + 1, max_row=len(r_nad_list) + len(r_int_list))
-    chart.set_categories(categor)
-    #   добавляем график в лист excel
-    ws.add_chart(chart, graph_r_int)
-
-    r_risk_list = []
-
-    for dict_values in handled_values_r_risks:
-        r_risk_some_list = []  # переоходный лист для добавлени эллементов
-        for value in dict_values:
-            r_risk_some_list.append(value)
-            r_risk_some_list.append(dict_values[value])
-            r_risk_list.append(r_risk_some_list)
-
-    for row in r_risk_list:
-        ws.append(row)
-    #   инициализиуем график
-    chart = BarChart()
-    #   Инициализируем оси графика
-    chart.y_axis.title = 'R_without_risk'
-    chart.x_axis.title = 'model'
-    # сообщаем графику на основе каких значений строиться
-    exc_value = Reference(worksheet=ws, min_row=len(r_int_list) + len(r_nad_list) + 1,
-                          max_row=len(r_int_list) + len(r_nad_list) + len(r_risk_list),
-                          min_col=2, max_col=2)
-    #   добавляем график в excel
-    chart.add_data(exc_value, titles_from_data=False)
-    #   добавляем названия столбцам графика
-    categor = Reference(worksheet=ws, min_col=1,
-                        min_row=len(r_nad_list) + len(r_int_list),
-                        max_row=len(r_nad_list) + len(r_int_list) + len(r_risk_list))
-    chart.set_categories(categor)
-    #   добавляем график в лист excel
-    ws.add_chart(chart, graph_r_risks)
-    #   добавляем записи в таблицу excel
+    return {'r_nad': r_nad_name, 'r_risk': r_risk_name}
 
 
-    #   генерируем уникальное имя файла
-    report_name = ''.join(random.choices(string.ascii_lowercase, k=8)) + '_report.xlsx'
-    # сохраняем отчёт в память
-    wb.save(str(Path(folder_name_in, report_name)))
-    print(str(folder_name_in) + report_name, '  : is saved')
+def document_maker(r_risk, r_int, r_nad, graphs):
+    folder_in_nad = str(Path(Path.cwd(), 'filestorage', graphs['r_nad']))
+    folder_in_risk = str(Path(Path.cwd(), 'filestorage', graphs['r_risk']))
+
+    report = DocxTemplate(str(Path(Path.cwd(), 'app', 'template.docx')))
+    r_nad_graph = InlineImage(report, image_descriptor=folder_in_nad, width=Mm(150), height=Mm(100))
+    r_risk_graph = InlineImage(report, image_descriptor=folder_in_risk, width=Mm(150), height=Mm(100))
+
+    context = {'r_risk': r_risk, 'r_int': r_int['R интегр'], 'r_nad': r_nad,
+               'r_nad_graph': r_nad_graph, 'r_risk_graph': r_risk_graph,
+               'r_nad_last': r_nad["За все действия"], 'r_risk_last': r_risk["За все действия"]}
+    report.render(context)
+    report_name = ''.join(random.choices(string.ascii_lowercase, k=8)) + '_report.docx'
+    report.save(str(Path(Path.cwd(), 'filestorage', report_name)))
+
     return report_name
 
 

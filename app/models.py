@@ -4,6 +4,10 @@ import math
 time_values = {'Секунда': 31536000, 'Минута': 526000, 'Час': 8766, 'Неделя': 52, 'День': 365, 'Месяц': 12, 'Год': 1}
 
 
+def r_integral(r_nad, r_narush):  # формула для R интегральное
+    return 1 - (1 - float(r_nad)) * (1 - float(r_narush))
+
+
 class ModelTreat:
     alfa = 0.0
     alfa_time = ''
@@ -21,12 +25,12 @@ class ModelTreat:
     operand = ''
 
     def consruct_from_dir(self, value):
-        self.alfa = float(int(value['alfa']))
+        self.alfa = float(value['alfa'])
         # self.alfa = float(value['alfa']) / time_values[value['alfa_time']]
-        self.beta = float(int(value['beta'])) / time_values[value['beta_time']]
-        self.t_between = float(int(value['t_between'])) / time_values[value['t_between_time']]
-        self.t_diag = float(int(value['t_diag'])) / time_values[value['t_diag_time']]
-        self.t_const = float(int(value['t_const'])) / time_values[value['t_const_time']]
+        self.beta = float(value['beta']) / time_values[value['beta_time']]
+        self.t_between = float(value['t_between']) / time_values[value['t_between_time']]
+        self.t_diag = float(value['t_diag']) / time_values[value['t_diag_time']]
+        self.t_const = float(value['t_const']) / time_values[value['t_const_time']]
 
     def construct_from_json(self):
         pass
@@ -53,6 +57,3 @@ class ModelTreat:
             return 1 - p_middle * p_end
         else:
             return 1 - self.p_impact(self.t_const)
-
-    def r_integral(self, r_narush):  # формула для R интегральное
-        return 1 - (1 - self.r_nadezh()) * (1 - r_narush)
