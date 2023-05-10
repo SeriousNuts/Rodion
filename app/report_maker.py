@@ -60,6 +60,13 @@ def graph_maker(handled_values_r_nad, handled_values_r_risks):
 def document_maker(r_risk, r_int, r_nad, graphs):
     folder_in_nad = str(Path(Path.cwd(), 'filestorage', graphs['r_nad']))
     folder_in_risk = str(Path(Path.cwd(), 'filestorage', graphs['r_risk']))
+    r_nad_check, r_risk_check, r_int_check = False, False, False
+    if r_nad["За все действия"] >= 0.05:
+        r_nad_check = True
+    if r_risk["За все действия"] >= 0.05:
+        r_risk_check = True
+    if r_int['R интегр'] >= 0.05:
+        r_int_check = True
 
     report = DocxTemplate(str(Path(Path.cwd(), 'app', 'template.docx')))
     r_nad_graph = InlineImage(report, image_descriptor=folder_in_nad, width=Mm(150), height=Mm(100))
@@ -67,10 +74,14 @@ def document_maker(r_risk, r_int, r_nad, graphs):
 
     context = {'r_risk': r_risk, 'r_int': r_int['R интегр'], 'r_nad': r_nad,
                'r_nad_graph': r_nad_graph, 'r_risk_graph': r_risk_graph,
-               'r_nad_last': r_nad["За все действия"], 'r_risk_last': r_risk["За все действия"]}
+               'r_nad_last': r_nad["За все действия"], 'r_risk_last': r_risk["За все действия"],
+               'r_nad_check': r_nad_check, 'r_risk_check': r_risk_check, 'r_int_check': r_int_check}
     report.render(context)
     report_name = ''.join(random.choices(string.ascii_lowercase, k=8)) + '_report.docx'
     report.save(str(Path(Path.cwd(), 'filestorage', report_name)))
+    #удаляем картинки
+    os.remove(folder_in_nad)
+    os.remove(folder_in_risk)
 
     return report_name
 
