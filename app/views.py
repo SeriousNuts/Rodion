@@ -11,6 +11,7 @@ from app.forms.LoginForm import LoginForm
 from .db_models import User, set_password, Report
 
 
+# проверка безопасности перенаправлений
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))
@@ -18,11 +19,13 @@ def is_safe_url(target):
            ref_url.netloc == test_url.netloc
 
 
+# менеджер загрузки пользователей
 @login_manager.user_loader
 def load_user(user_id):
     return db.session.query(User).get(user_id)
 
 
+#   страница скачивания отчёта
 @app.route('/report', methods=['GET', 'POST'])
 def report():
     req_params = request.get_json('report', silent=True)  # принимаем результаты в формате json
@@ -32,8 +35,8 @@ def report():
         r_without_risks = req_params[0]
         r_risks = req_params[1]
         try:
-            handled_values_r_risk = report_maker.handle_values_R_nadezh(r_risks) # r narush
-            handled_values_nad = report_maker.handle_values_R_nadezh(r_without_risks) # r nad
+            handled_values_r_risk = report_maker.handle_values_R_nadezh(r_risks)  # r narush
+            handled_values_nad = report_maker.handle_values_R_nadezh(r_without_risks)  # r nad
             handled_values_r_int = report_maker.handle_values_R_integral(handled_values_r_risk, handled_values_nad)
             graphs = report_maker.graph_maker(handled_values_nad, handled_values_r_risk)
             filename = report_maker.document_maker(handled_values_r_risk,
@@ -47,18 +50,21 @@ def report():
     return render_template(template)
 
 
+# страница для данных R надёжное
 @app.route('/gost_69420')
 @login_required
 def index():
     return render_template('index.html')
 
 
+# страница для данных R наруш
 @app.route('/risks')
 @login_required
 def risks():
     return render_template('risks.html')
 
 
+# функция для скачивания
 @app.route('/download')
 @app.route('/download/<filename>')
 @login_required
@@ -76,6 +82,7 @@ def download(filename=None):
     return send_from_directory(download_string, file.name)
 
 
+# страница личного кабинета
 @app.route('/personal_account')
 @login_required
 def personal_account():
@@ -86,6 +93,7 @@ def personal_account():
     return render_template('personal_account.html', user=user, reports=user_reports)
 
 
+# главная страница
 @app.route('/')
 @app.route('/main')
 @login_required
@@ -93,6 +101,7 @@ def main_page():
     return render_template('main_page.html')
 
 
+# страница входа
 @app.route('/login', defaults={'errors': None}, methods=['GET', 'POST'])
 @app.route('/login/<errors>')
 def login(errors=None):
@@ -101,6 +110,7 @@ def login(errors=None):
     return render_template('login.html', title='Вход', form=form, error=errors)
 
 
+# функция проверка правильности входа
 @app.route('/check_login', methods=['GET', 'POST'])
 def check_login():
     if request.method == 'POST':
@@ -116,6 +126,7 @@ def check_login():
             return redirect(url_for('login', errors="Неверный логин или пароль"))
 
 
+# страница регистрации
 @app.route('/register', methods=['GET', 'POST'])
 def register_form():
     form = request.form.to_dict()
@@ -134,6 +145,7 @@ def register_form():
     return render_template('register.html', title='Регистрация', form=form)
 
 
+# функция выхода из аккаунта
 @app.route("/logout")
 @login_required
 def logout():
