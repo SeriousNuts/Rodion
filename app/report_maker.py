@@ -43,6 +43,7 @@ def handle_values_R_integral(values_risks, value_without_risks):
 
 
 def graph_maker(handled_values_r_nad, handled_values_r_risks):
+    #   создаём имя графика для R наджёное
     r_nad_name = ''.join(random.choices(string.ascii_lowercase, k=7)) + 'r_nad.png'
     r_nad_graph = plt.figure()
     plt.bar(handled_values_r_nad.keys(), handled_values_r_nad.values())
@@ -50,7 +51,6 @@ def graph_maker(handled_values_r_nad, handled_values_r_risks):
 
     r_risk_name = ''.join(random.choices(string.ascii_lowercase, k=7)) + 'r_risk.png'
     r_risk_graph = plt.figure()
-
     plt.bar(handled_values_r_risks.keys(), handled_values_r_risks.values())
     r_risk_graph.savefig(str(Path(Path.cwd(), 'filestorage', r_risk_name)), dpi=100)
 

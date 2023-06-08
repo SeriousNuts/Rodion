@@ -27,6 +27,7 @@ def load_user(user_id):
 
 #   страница скачивания отчёта
 @app.route('/report', methods=['GET', 'POST'])
+@login_required
 def report():
     req_params = request.get_json('report', silent=True)  # принимаем результаты в формате json
     template = 'report.html'
@@ -51,7 +52,7 @@ def report():
 
 
 # страница для данных R надёжное
-@app.route('/gost_69420')
+@app.route('/calculating')
 @login_required
 def index():
     return render_template('index.html')
@@ -62,6 +63,11 @@ def index():
 @login_required
 def risks():
     return render_template('risks.html')
+
+@app.route('/gost_59338')
+@login_required
+def gost_59338():
+    return render_template('gost_59338.html')
 
 
 # функция для скачивания

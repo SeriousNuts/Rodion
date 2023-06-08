@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Modelst</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+    <header class="header">
+        <img src="../static/header-logo.png" alt="" class="header__logo">
+        <h1 class="header__title">Оценка рисков в процессах жизненного цикла системы</h1>
+        <ul class="header-links">
+            <li class="header-links__item"><a href="/main" class="header-links__link">Главная страница</a></li>
+            <li class="header-links__item"><a href="/personal_account" class="header-links__link">Личный кабинет</a>
+            </li>
+            <li class="header-links__item"><a href="/logout" class="header-links__link">Выйти из аккаунта</a></li>
+        </ul>
+    </header>
+    <!-- {% extends "base.html" %}
+    {% block content %} -->
+</head>
+
+<body>
+    <main>
+        <section class="model">
+            <h2 class="model__title">Введите значения для расчета параметров без учета рисков ИБ</h2>
+            <div>
+            <input id="59338" type="checkbox">
+            <label for="59338">Учёт качества используемой информации</label>
+                <h1></h1>
+            </div>
+            <div class="cards" id="cards">
+                <div class="card" id="1">
+                    <div class="card-body">
+                        <div class="value">
+                            <div class="row gx-3 align-items-center">
+                                <div class="col-2">
+                                    <label for="alfa" class="col-form-label">σ</label>
+                                </div>
+                                <div class="col-auto">
+                                    <input type="number" name="alfa" id="alfa" class="form-control" placeholder="">
+                                </div>
+                                <div class="col-4">
+                                    <select id="alfa_time" class="form-select" name="alfa_time">
+                                        <option>Год</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="value">
+                            <div class="row gx-3 align-items-center">
+                                <div class="col-2">
+                                    <label for="beta" class="col-form-label">β</label>
+                                </div>
+                                <div class="col-auto">
+                                    <input type="number" name="beta" id="beta" class="form-control" placeholder="">
+                                </div>
+                                <div class="col-4">
+                                    <select id="beta_time" name="beta_time" class="form-select">
+                                        <option>Секунда</option>
+                                        <option>Минута</option>
+                                        <option>Час</option>
+                                        <option>День</option>
+                                        <option>Неделя</option>
+                                        <option>Месяц</option>
+                                        <option>Год</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="value">
+                            <div class="row gx-3 align-items-center">
+                                <div class="col-2">
+                                    <label for="t_between" class="col-form-label">T<span>меж</span></label>
+                                </div>
+                                <div class="col-auto">
+                                    <input type="number" name="t_between" id="t_between" class="form-control"
+                                        placeholder="">
+                                </div>
+                                <div class="col-4">
+                                    <select id="t_between_time" name="t_between_time" class="form-select">
+                                        <option>Секунда</option>
+                                        <option>Минута</option>
+                                        <option>Час</option>
+                                        <option>День</option>
+                                        <option>Неделя</option>
+                                        <option>Месяц</option>
+                                        <option>Год</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="value">
+                            <div class="row gx-3 align-items-center">
+                                <div class="col-2">
+                                    <label for="t_diag" class="col-form-label">T<span>диаг</span></label>
+                                </div>
+                                <div class="col-auto">
+                                    <input type="number" name="t_diag" id="t_diag" class="form-control" placeholder="">
+                                </div>
+                                <div class="col-4">
+                                    <select id="t_diag_time" name="t_diag_time" class="form-select">
+                                        <option>Секунда</option>
+                                        <option>Минута</option>
+                                        <option>Час</option>
+                                        <option>День</option>
+                                        <option>Неделя</option>
+                                        <option>Месяц</option>
+                                        <option>Год</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="value">
+                            <div class="row gx-3 align-items-center">
+                                <div class="col-2">
+                                    <label for="t_recharge" class="col-form-label">T<span>восст</span></label>
+                                </div>
+                                <div class="col-auto">
+                                    <input type="number" name="t_recharge" id="t_recharge" class="form-control"
+                                        placeholder="">
+                                </div>
+                                <div class="col-4">
+                                    <select id="t_recharge_time" name="t_recharge_time" class="form-select">
+                                        <option>Секунда</option>
+                                        <option>Минута</option>
+                                        <option>Час</option>
+                                        <option>День</option>
+                                        <option>Неделя</option>
+                                        <option>Месяц</option>
+                                        <option>Год</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="value">
+                            <div class="row gx-3 align-items-center">
+                                <div class="col-2">
+                                    <label for="t_const" class="col-form-label">T<span>зад</span></label>
+                                </div>
+                                <div class="col-auto">
+                                    <input type="number" name="t_const" id="t_const" class="form-control" placeholder="">
+                                </div>
+                                <div class="col-4">
+                                    <select id="t_const_time" name="t_const_time" class="form-select">
+                                        <option>Секунда</option>
+                                        <option>Минута</option>
+                                        <option>Час</option>
+                                        <option>День</option>
+                                        <option>Неделя</option>
+                                        <option>Месяц</option>
+                                        <option>Год</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="value__btns row">
+                            <button type="button" class="btn btn-success col-auto create-elem-btn" onclick="createElemHandler(this)">Добавить элемент</button>
+                            <button type="button" class="btn btn-danger col-auto delete-elem-btn" onclick="deleteElemHandler(this)">Удалить элемент</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="model__btns">
+                <a href="/risks" class="btn btn-success submit-btn">Далее</a>
+                </div>
+        </section>
+    </main>
+
+    <script>
+        function p_impact(alfa, beta, t_const) {
+            // формула P(1) воздействия
+            if (alfa == Math.pow(beta, -1)) {
+                console.log('work')
+                return (Math.exp(-alfa * t_const)) * (1 + alfa * t_const);
+            } else {
+                return ((alfa - 1 / beta) ** -1) * (alfa * Math.exp(-t_const / beta) - (Math.pow(beta, -1) * (Math.exp(-1 * alfa * t_const))));
+            }
+        }
+        function R_nad() {
+            alfa_time = document.getElementById('alfa_time').value
+            beta_time = document.getElementById('beta_time').value
+            t_between_time = document.getElementById('t_between_time').value
+            t_recharge_time = document.getElementById('t_recharge_time').value
+            t_diag_time = document.getElementById('t_diag_time').value
+            t_const_time = document.getElementById('t_const_time').value
+            time_values = { 'секунда': 31536000, 'минута': 526000, 'час': 8766, 'неделя': 52, 'день': 365, 'месяц': 12, 'год': 1 }
+            alfa = parseFloat(document.getElementById('alfa').value)
+            beta = parseFloat(document.getElementById('beta').value) / time_values[beta_time]
+            t_between = parseFloat(document.getElementById('t_between').value) / time_values[t_between_time]
+            t_rachrge = parseFloat(document.getElementById('t_recharge').value) / time_values[t_recharge_time]
+            t_diag = parseFloat(document.getElementById('t_diag').value) / time_values[t_diag_time]
+            t_const = parseFloat(document.getElementById('t_const').value) / time_values[t_const_time]
+
+            b_1 = Math.floor(t_const / (t_between + t_diag));
+            console.log("b_1", b_1)
+            //p_impact_ = p_impact(alfa, beta, t_const)
+
+            t_ost = t_const - b_1 * (t_between + t_diag);
+
+            p_end = p_impact(alfa, beta, t_ost)
+
+            var p_middle;
+            var r_nad;
+            if (t_const >= (t_between + t_diag)) {
+                p_middle = Math.pow(p_impact(alfa, beta, t_between + t_diag), b_1)
+                r_nad = (1 - p_middle * p_end)
+            } else {
+                r_nad = (1 - p_impact(alfa, beta, t_const))
+            }
+            alert(r_nad);
+
+        }
+
+    </script>
+    <script>
+        const createElemHandler = btn => {
+            const cardsWrapper = document.getElementById('cards'); // Родительский элемент для всех карточек
+
+            let cardElem = document.createElement('div'); // Создание элемента для вставки в DOM дерево
+            cardElem.className = 'card'; // Присвоение класса элементу
+            cardElem.id = `${cardsWrapper.children.length + 1}`; // Присвоение уникального id каждому созданному элементу
+            cardElem.innerHTML = btn.parentElement.parentElement.parentElement.innerHTML; // Копирование содержимого изначальной карточки и вставка в созданный элемент
+            cardsWrapper.appendChild(cardElem); // Добавление созданного элемента в родительский
+        }
+
+        const deleteElemHandler = btn => {
+            const cardsWrapper = document.getElementById('cards'); // Родительский элемент для всех карточек
+
+            cardsWrapper.removeChild(document.getElementById(`${btn.parentElement.parentElement.parentElement.getAttribute('id')}`)) // Удаление нужного элемента из родительского
+        }
+        function getCardsData() {
+            const cardsWrapper = document.getElementById('cards'); // Родительский элемент для всех карточек
+            var values_ = [];
+            for (let i = 0; i < cardsWrapper.childElementCount; i++) {
+                let inputs = cardsWrapper.children.item(i).getElementsByTagName('input'); // Получаем все эллементы input
+                let selects = cardsWrapper.children.item(i).getElementsByTagName('select')
+                let map = new Map(); // Создаём мап для эллементов
+                for (let j = 0; j < inputs.length; j++) {
+                    map.set(inputs[j].name, inputs[j].value); // Добавляем input эллементы в MAP
+                    map.set(selects[j].name, selects[j].value);// Добавляем select эллементы в MAP
+                }
+                let object = {};
+                map.forEach((value, key) => { // Переводим мап в объекты js
+                    object[key] = value;
+                });
+                values_.push(object); // Переводим объекты в json
+            }
+            return JSON.stringify(values_)
+        }
+        function sendjson() {
+            data = getCardsData()
+            const httpRequest = new XMLHttpRequest();
+
+            if (!httpRequest) {
+                alert('Giving up :( Cannot create an XMLHTTP instance');
+                return false;
+            }
+            httpRequest.open('POST', 'report');
+            httpRequest.send(data);
+            window.location.replace('report');
+        }
+        const submit_btns = document.querySelectorAll('.submit-btn');
+        submit_btns.forEach(btn=> {
+            btn.addEventListener('click', set_To_ls)
+        })
+        function set_To_ls(){
+            const data = getCardsData()
+            localStorage.setItem("without_risks", data)
+        }
+    </script>
+    <!-- {% endblock %} -->
+    <footer class="footer">
+        <ul class="footer-contacts">
+            <li class="footer-contacts__item"><a href="#" class="footer-contacts__link">+7 923 123 12 13</a></li>
+        </ul>
+        <div class="footer-info">
+            <span class="footer-info__text">Работа выполнена...</span>
+        </div>
+    </footer>
+</body>
+
+</html>
